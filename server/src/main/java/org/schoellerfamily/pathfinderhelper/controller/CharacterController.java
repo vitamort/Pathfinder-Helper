@@ -17,18 +17,22 @@ public class CharacterController {
         this.repository = repository;
     }
 
+    /**
+     * @CrossOrigin(origins = "http://localhost:4200") places localhost:4200 in the Access-Control-Allow-Origin header of both the pre-flight response and the actual response.
+     */
     @GetMapping("/good-beers")
     @CrossOrigin(origins = "http://localhost:4200")
-    public Collection<Character> goodBeers() {
+    public Collection<Character> charactersInCampaign() {
 
         return repository.findAll().stream()
-                .filter(this::isGreat)
+                .filter(this::inCampaign)
                 .collect(Collectors.toList());
     }
 
-    private boolean isGreat(Character beer) {
-        return !beer.getName().equals("Budweiser") &&
-                !beer.getName().equals("Coors Light") &&
-                !beer.getName().equals("PBR");
+    	//TODO change inCampaign to check of the characters are used in this campaign
+    private boolean inCampaign(Character character) {
+        return !character.getName().equals("Budweiser") &&
+                !character.getName().equals("Coors Light") &&
+                !character.getName().equals("PBR");
     }
 }
