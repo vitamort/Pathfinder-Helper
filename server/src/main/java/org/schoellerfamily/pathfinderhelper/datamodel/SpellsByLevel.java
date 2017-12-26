@@ -26,6 +26,7 @@ public class SpellsByLevel {
     private ArrayList<Spell> level8Spells;
     /** */
     private ArrayList<Spell> level9Spells;
+
     /**
      * @return the level0Spells
      */
