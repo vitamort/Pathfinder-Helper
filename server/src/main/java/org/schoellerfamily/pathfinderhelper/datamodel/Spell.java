@@ -1,6 +1,10 @@
 package org.schoellerfamily.pathfinderhelper.datamodel;
 
-public class Spell
-{
+/**
+ * Represents a character's spell.
+ *
+ * @author jonathanschoeller
+ */
+public class Spell {
 
 }

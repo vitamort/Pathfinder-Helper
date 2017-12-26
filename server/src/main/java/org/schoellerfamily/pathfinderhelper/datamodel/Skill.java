@@ -1,18 +1,27 @@
 package org.schoellerfamily.pathfinderhelper.datamodel;
 
-public abstract class Skill
-{
-	private String name;
+/**
+ * Base class for the various character skills.
+ *
+ * @author jonathanschoeller
+ */
+public abstract class Skill {
+    /**
+     * Holds the name of the skill.
+     */
+    private String name;
 
-	public String getName()
-	{
-		// TODO Auto-generated method stub
-		return name;
-	}
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
+    /**
+     * @param name the name to set
+     */
+    public void setName(final String name) {
+        this.name = name;
+    }
 }

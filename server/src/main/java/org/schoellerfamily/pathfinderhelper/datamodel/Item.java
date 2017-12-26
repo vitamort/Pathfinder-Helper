@@ -1,6 +1,10 @@
 package org.schoellerfamily.pathfinderhelper.datamodel;
 
-public abstract class Item
-{
+/**
+ * Represents items found or carried by characters.
+ *
+ * @author jonathanschoeller
+ */
+public abstract class Item {
 
 }

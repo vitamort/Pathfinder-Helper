@@ -1,6 +1,10 @@
 package org.schoellerfamily.pathfinderhelper.datamodel;
 
-public abstract class Ability
-{
+/**
+ * Represents activated character abilities.
+ *
+ * @author jonathanschoeller
+ */
+public abstract class Ability {
 
 }

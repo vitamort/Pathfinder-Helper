@@ -1,6 +1,9 @@
 package org.schoellerfamily.pathfinderhelper.datamodel;
 
-public abstract class Race
-{
-
+/**
+ * Base class for character race.
+ *
+ * @author jonathanschoeller
+ */
+public abstract class Race {
 }
