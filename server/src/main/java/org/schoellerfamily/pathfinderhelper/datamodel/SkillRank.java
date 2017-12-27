@@ -1,30 +1,41 @@
 package org.schoellerfamily.pathfinderhelper.datamodel;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
 /**
  * Represents the skill / rank relationship.
  *
  * @author jonathanschoeller
  */
+@Entity
 public class SkillRank {
+    /**
+     * SkillRank object ID.
+     */
+    @Id
+    @GeneratedValue
+    private Integer id;
+
+    /**
+     * ID of containing character.
+     */
+    @ManyToOne
+    private Character character;
+
     /**
      * Holds the associated skill.
      */
+    @OneToOne
     private Skill skill;
 
     /**
      * Holds the rank count.
      */
     private Integer rankCount;
-
-    /**
-     * Constructor.
-     *
-     * @param skill the associated skill
-     */
-    public SkillRank(final Skill skill) {
-        this.skill = skill;
-        rankCount = Integer.valueOf(1);
-    }
 
     /**
      * @return the skill

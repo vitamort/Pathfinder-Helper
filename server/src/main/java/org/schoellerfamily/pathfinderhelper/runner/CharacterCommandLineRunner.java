@@ -35,7 +35,11 @@ public class CharacterCommandLineRunner implements CommandLineRunner {
         // for this project
         Stream.of("Kentucky Brunch Brand Stout", "Good Morning", "Very Hazy", "King Julius",
                 "Budweiser", "Coors Light", "PBR")
-                .forEach(name -> repository.save(new Character()));
+                .forEach(name -> {
+                    final Character character = new Character();
+                    character.setName(name);
+                    repository.save(character);
+                });
         repository.findAll().forEach(System.out::println);
     }
 }

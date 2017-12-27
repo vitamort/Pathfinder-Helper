@@ -22,6 +22,6 @@ export class BeerListComponent implements OnInit {
         }
       },
       error => console.log(error)
-    )
+    );
   }
 }

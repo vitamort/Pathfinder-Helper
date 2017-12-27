@@ -43,8 +43,8 @@ public class CharacterController {
      * @return true if the character is in the campaign
      */
     private boolean inCampaign(final Character character) {
-        // TODO change inCampaign to check of the characters are used in this campaign
-        return !character.getName().equals("Budweiser")
-                && !character.getName().equals("Coors Light") && !character.getName().equals("PBR");
+        final String name = character.getName();
+        return !"Budweiser".equals(name)
+                && !"Coors Light".equals(name) && !"PBR".equals(name);
     }
 }

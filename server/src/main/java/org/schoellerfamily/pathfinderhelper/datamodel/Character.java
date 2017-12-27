@@ -1,11 +1,13 @@
 package org.schoellerfamily.pathfinderhelper.datamodel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * @author jonathanschoeller
@@ -47,10 +49,6 @@ public final class Character {
     /** */
     private Integer charisma;
     /** */
-    private ArrayList<CharacterClassLevel> levels;
-    /** */
-    private Race race;
-    /** */
     private String gender;
     /** */
     private Integer age;
@@ -85,17 +83,27 @@ public final class Character {
     /** */
     private Integer burrowspeed;
     /** */
-    private ArrayList<Item> inventory;
+    @OneToOne
+    private Race race;
     /** */
-    private ArrayList<SkillRank> skillranks;
+    @OneToMany
+    private List<CharacterClassLevel> levels;
     /** */
-    private HashMap<String, SpellsByLevel> spellsknown;
+    @OneToMany
+    private List<Item> inventory;
     /** */
-    private HashMap<String, SpellsByLevel> spellsprepared;
+    @OneToMany
+    private List<SkillRank> skillranks;
     /** */
-    private ArrayList<Ability> abilities;
-    /** */
-    private ArrayList<String> passives;
+    @OneToMany
+    private List<Ability> abilities;
+//    /** */
+//    @OneToMany
+//    private List<String> passives;
+//    /** */
+//    private HashMap<String, SpellsByLevel> spellsknown;
+//    /** */
+//    private HashMap<String, SpellsByLevel> spellsprepared;
 
     /**
      * This is important in Pathfinder because the modifier is based entirely on the
@@ -524,47 +532,46 @@ public final class Character {
         this.burrowspeed = burrowspeed;
     }
 
-    /**
-     * @return gets the list of passive affects on the character. The list is in
-     *         ArrayList form, and the affects are in String form
-     */
-    public ArrayList<String> getPassives() {
-        return passives;
-    }
-
-    // TODO getSpellsknown(Class), addSpellknown(Class, Spell),
-    // removeSpellknown(Class, Spell), getSpellsprepared(Class),
-    // setSpellsprepared(Class, ArrayList<Spell>), getSpellsslots(Class),
-    // setSpellsslots(Class, Integer[10]), getAbilities(), addAbility(Ability),
-    // removeAbility(Ability)
-
-    /**
-     * @param passive
-     *            takes a String and adds it to the ArrayList of passive affects on
-     *            the character
-     */
-    public void addPassive(final String passive) {
-        if (passives == null) {
-            passives = new ArrayList<String>();
-        }
-        passives.add(passive);
-    }
-
-    /**
-     * @param passive
-     *            takes a String and searches the ArrayList of passive affects on
-     *            the character for a copy of the String. If the String is found, it
-     *            is removed from the ArrayList
-     */
-    public void removePassive(final String passive) {
-        passives.remove(passive);
-    }
+//    /**
+//     * @return gets the list of passive affects on the character
+//     */
+//    public List<String> getPassives() {
+//        return passives;
+//    }
+//
+//    // TODO getSpellsknown(Class), addSpellknown(Class, Spell),
+//    // removeSpellknown(Class, Spell), getSpellsprepared(Class),
+//    // setSpellsprepared(Class, ArrayList<Spell>), getSpellsslots(Class),
+//    // setSpellsslots(Class, Integer[10]), getAbilities(), addAbility(Ability),
+//    // removeAbility(Ability)
+//
+//    /**
+//     * @param passive
+//     *            takes a String and adds it to the list of passive affects on
+//     *            the character
+//     */
+//    public void addPassive(final String passive) {
+//        if (passives == null) {
+//            passives = new ArrayList<String>();
+//        }
+//        passives.add(passive);
+//    }
+//
+//    /**
+//     * @param passive
+//     *            takes a String and searches the List of passive affects on
+//     *            the character for a copy of the String. If the String is found, it
+//     *            is removed from the List
+//     */
+//    public void removePassive(final String passive) {
+//        passives.remove(passive);
+//    }
 
     /**
      * @return gets the list of class levels on the character. The list is in
-     *         ArrayList form, and is populated with PathfinderClassLevel
+     *         List form, and is populated with PathfinderClassLevel
      */
-    public ArrayList<CharacterClassLevel> getLevels() {
+    public List<CharacterClassLevel> getLevels() {
         return levels;
     }
 
@@ -599,10 +606,9 @@ public final class Character {
     }
 
     /**
-     * @return gets the list of items in the character inventory. The list is in
-     *         ArrayList form, and is populated with Item
+     * @return gets the list of items in the character inventory
      */
-    public ArrayList<Item> getInventory() {
+    public List<Item> getInventory() {
         return inventory;
     }
 
@@ -628,9 +634,9 @@ public final class Character {
 
     /**
      * @return gets the list of character skills with ranks applied. The list is in
-     *         ArrayList form, and is populated with SkillRank
+     *         List form, and is populated with SkillRank
      */
-    public ArrayList<SkillRank> getSkillranks() {
+    public List<SkillRank> getSkillranks() {
         return skillranks;
     }
 
@@ -651,20 +657,28 @@ public final class Character {
                 return;
             }
         }
-        skillranks.add(new SkillRank(skill));
+        final SkillRank skillRank = new SkillRank();
+        skillRank.setSkill(skill);
+        skillranks.add(skillRank);
     }
 
     /**
-     * @return gets the list of available abilities. The list is in ArrayList form,
-     *         and is populated with Ability
+     * @param abilities the abilities to set
      */
-    public ArrayList<Ability> getAbilities() {
+    public void setAbilities(final List<Ability> abilities) {
+        this.abilities = abilities;
+    }
+
+    /**
+     * @return gets the list of available abilities
+     */
+    public List<Ability> getAbilities() {
         return abilities;
     }
 
     /**
      * @param ability
-     *            takes an Ability and adds it to the ArrayList of available
+     *            takes an Ability and adds it to the list of available
      *            abilities for the character
      */
     public void addAbility(final Ability ability) {
@@ -673,40 +687,40 @@ public final class Character {
 
     /**
      * @param ability
-     *            takes an Ability and searches the ArrayList of abilities for the
+     *            takes an Ability and searches the list of abilities for the
      *            character for a copy of the ability. If the ability is found, it
-     *            is removed from the ArrayList
+     *            is removed from the list
      */
     public void removeAbility(final Ability ability) {
         abilities.remove(ability);
     }
 
-    /**
-     * @return the known spells
-     */
-    public HashMap<String, SpellsByLevel> getSpellsknown() {
-        return spellsknown;
-    }
-
-    /**
-     * @param spellsknown the new collection of known spells
-     */
-    public void setSpellsknown(final HashMap<String, SpellsByLevel> spellsknown) {
-        this.spellsknown = spellsknown;
-    }
-
-    /**
-     * @return the prepared spells
-     */
-    public HashMap<String, SpellsByLevel> getSpellsprepared() {
-        return spellsprepared;
-    }
-
-    /**
-     * @param spellsprepared the new collection of prepared spells
-     */
-    public void setSpellsprepared(final HashMap<String, SpellsByLevel> spellsprepared) {
-        this.spellsprepared = spellsprepared;
-    }
+//    /**
+//     * @return the known spells
+//     */
+//    public HashMap<String, SpellsByLevel> getSpellsknown() {
+//        return spellsknown;
+//    }
+//
+//    /**
+//     * @param spellsknown the new collection of known spells
+//     */
+//    public void setSpellsknown(final HashMap<String, SpellsByLevel> spellsknown) {
+//        this.spellsknown = spellsknown;
+//    }
+//
+//    /**
+//     * @return the prepared spells
+//     */
+//    public HashMap<String, SpellsByLevel> getSpellsprepared() {
+//        return spellsprepared;
+//    }
+//
+//    /**
+//     * @param spellsprepared the new collection of prepared spells
+//     */
+//    public void setSpellsprepared(final HashMap<String, SpellsByLevel> spellsprepared) {
+//        this.spellsprepared = spellsprepared;
+//    }
 
 }

@@ -9,7 +9,7 @@ import org.junit.Test;
  */
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
-public class PathfinderHelperApplicationTests {
+public class PathfinderHelperApplicationTest {
 
     /** */
     @Test

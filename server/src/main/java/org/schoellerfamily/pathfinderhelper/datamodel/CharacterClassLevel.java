@@ -1,14 +1,35 @@
 package org.schoellerfamily.pathfinderhelper.datamodel;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
 /**
  * Combines level count with character class.
  *
  * @author jonathanschoeller
  */
-public class CharacterClassLevel {
+@Entity
+public final class CharacterClassLevel {
+    /**
+     * Character class ID.
+     */
+    @Id
+    @GeneratedValue
+    private Integer id;
+
+    /**
+     * ID of containing character.
+     */
+    @ManyToOne
+    private Character character;
+
     /**
      * Holds the relationship to the character class.
      */
+    @OneToOne
     private CharacterClass characterClass;
 
     /**
@@ -17,11 +38,17 @@ public class CharacterClassLevel {
     private Integer level;
 
     /**
-     * @param characterClass the related class
+     * @return the id
      */
-    public CharacterClassLevel(final CharacterClass characterClass) {
-        this.characterClass = characterClass;
-        level = Integer.valueOf(1);
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(final Integer id) {
+        this.id = id;
     }
 
     /**
