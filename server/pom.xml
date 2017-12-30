@@ -38,6 +38,7 @@
 
     <compiler-plugin.version>3.7.0</compiler-plugin.version>
     <jacoco-plugin.version>0.7.9</jacoco-plugin.version>
+    <coveralls-plugin.version>4.3.0</coveralls-plugin.version>
     <findbugs-plugin.version>3.0.5</findbugs-plugin.version>
     <checkstyle-plugin.version>2.17</checkstyle-plugin.version>
     <checkstyle.version>8.4</checkstyle.version>
@@ -113,6 +114,11 @@
           <version>${jacoco-plugin.version}</version>
         </plugin>
         <plugin>
+          <groupId>org.eluder.coveralls</groupId>
+          <artifactId>coveralls-maven-plugin</artifactId>
+          <version>${coveralls-plugin.version}</version>
+        </plugin>
+        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>findbugs-maven-plugin</artifactId>
           <version>${findbugs-plugin.version}</version>
@@ -172,7 +178,7 @@
                     <limit>
                       <counter>COMPLEXITY</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.10</minimum>
+                      <minimum>0.35</minimum>
                     </limit>
                   </limits>
                 </rule>
@@ -180,6 +186,10 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
