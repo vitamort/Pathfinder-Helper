@@ -32,7 +32,7 @@ public class CharacterController {
      *                      pre-flight response and the actual response.
      * @return the collection of characters that are in the campaign
      */
-    @GetMapping("/good-beers")
+    @GetMapping("/characters")
     @CrossOrigin(origins = "http://localhost:4200")
     public Collection<Character> charactersInCampaign() {
         return repository.findAll().stream().filter(this::inCampaign).collect(Collectors.toList());
