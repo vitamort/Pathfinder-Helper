@@ -1,0 +1,28 @@
+engines:
+#  stylelint:
+#    enabled: true
+  markdownlint:
+    enabled: true
+  fixme:
+    enabled: true
+    config:
+      string:
+      - FIXME
+      - TODO
+      - NOPMD
+  checkstyle:
+    enabled: true
+    channel: "beta"
+    config: config/checkstyle.xml
+  pmd:
+    enabled: true
+    channel: "beta"
+    config: config/pmd-5.xml
+ratings:
+  paths:
+  - "**.css"
+  - "**.java"
+  - "**.md"
+  - "**.html"
+exclude_paths:
+- config/

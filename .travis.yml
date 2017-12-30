@@ -1,0 +1,19 @@
+branches:
+  except: master
+
+language: java
+
+
+jdk:
+  - oraclejdk8
+
+cache:
+  directories:
+  - $HOME/.m2
+
+jobs:
+  include:
+    - stage: build
+      install: ./scripts/install.sh
+      script:
+      - ./scripts/script.sh
