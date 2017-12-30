@@ -3,11 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class BeerService {
+export class CharacterService {
 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<any> {
-    return this.http.get('http://localhost:8080/good-beers');
+    return this.http.get('http://localhost:8080/characters');
   }
 }
