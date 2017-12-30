@@ -34,7 +34,7 @@ public class CharacterControllerTest {
     /** */
     @Test
     public final void testGoodBeersSuccess() {
-        final String url = "http://localhost:" + port + "/good-beers";
+        final String url = "http://localhost:" + port + "/characters";
         final ResponseEntity<String> entity = testRestTemplate.getForEntity(url, String.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
@@ -42,7 +42,7 @@ public class CharacterControllerTest {
     /** */
     @Test
     public final void testGoodBeersResult() {
-        final String url = "http://localhost:" + port + "/good-beers";
+        final String url = "http://localhost:" + port + "/characters";
         final ResponseEntity<String> entity = testRestTemplate.getForEntity(url, String.class);
         assertTrue(entity.getBody().startsWith("[ {\n"
                 + "  \"id\" : 1,\n"
