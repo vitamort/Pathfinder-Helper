@@ -1,5 +1,6 @@
 #!/bin/bash
 pushd server
-#mvn install jacoco:report coveralls:report --settings=../config/settings.xml -Ptravis-build -B
-mvn install --settings=../config/settings.xml -Ptravis-build -B
+mvn --settings=../config/settings.xml -Ptravis-build -B \
+    install jacoco:report \
+    coveralls:report -DrepoToken=${REPOTOKEN}
 popd
