@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schoellerfamily.pathfinderhelper.PathfinderHelperApplication;
+import org.schoellerfamily.pathfinderhelper.datamodel.Character;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,16 +34,16 @@ public class CharacterControllerTest {
 
     /** */
     @Test
-    public final void testGoodBeersSuccess() {
-        final String url = "http://localhost:" + port + "/good-beers";
+    public final void testCharacterListSuccess() {
+        final String url = "http://localhost:" + port + "/characters";
         final ResponseEntity<String> entity = testRestTemplate.getForEntity(url, String.class);
         assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
 
     /** */
     @Test
-    public final void testGoodBeersResult() {
-        final String url = "http://localhost:" + port + "/good-beers";
+    public final void testCharacterListResult() {
+        final String url = "http://localhost:" + port + "/characters";
         final ResponseEntity<String> entity = testRestTemplate.getForEntity(url, String.class);
         assertTrue(entity.getBody().startsWith("[ {\n"
                 + "  \"id\" : 1,\n"
@@ -56,5 +57,14 @@ public class CharacterControllerTest {
                 + "  \"charisma\" : null,\n"
                 + "  \"gender\" : null,\n"
                 + "  \"age\" : null,\n"));
+    }
+
+    /** */
+    @Test
+    public final void testCharacterByIdSuccess() {
+        final String url = "http://localhost:" + port + "/characters/" + Long.valueOf((long) 1);
+        final ResponseEntity<Character> entity =
+                testRestTemplate.getForEntity(url, Character.class);
+        assertTrue(entity.getBody().getName().equals("Kentucky Brunch Brand Stout"));
     }
 }

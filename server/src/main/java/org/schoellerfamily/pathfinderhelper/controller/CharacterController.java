@@ -7,6 +7,7 @@ import org.schoellerfamily.pathfinderhelper.datamodel.Character;
 import org.schoellerfamily.pathfinderhelper.repository.CharacterRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -36,6 +37,16 @@ public class CharacterController {
     @CrossOrigin(origins = "http://localhost:4200")
     public Collection<Character> charactersInCampaign() {
         return repository.findAll().stream().filter(this::inCampaign).collect(Collectors.toList());
+    }
+
+    /**
+     * @param id the ID of the character requested
+     * @return the character with the given ID
+     */
+    @GetMapping("/characters/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public Character characterById(@PathVariable final Long id) {
+        return repository.getOne(id);
     }
 
     /**
