@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { CharacterListComponent } from './character-list/character-list.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CharacterComponent } from './character-list/character.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CharacterListComponent
+    CharacterListComponent,
+    CharacterComponent
   ],
   imports: [
     BrowserModule,

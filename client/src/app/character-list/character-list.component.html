@@ -1,6 +1,11 @@
 <h2>Character List</h2>
-
+<!-- for each character in the character list -->
+<!-- creates a character component for the character -->
+<!-- passing the name and id of the character to the component -->
+<!-- and creates a div with an id of the character's name -->
 <div *ngFor="let c of characters">
-  {{c.name}}<br>
-  <img width="200" src="{{c.giphyUrl}}" alt="{{c.name}}">
+  <app-character 
+    name={{c.name}}
+    id={{c.id}}></app-character><br>
+  <div id={{c.name}}></div>
 </div>
