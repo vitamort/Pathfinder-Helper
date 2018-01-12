@@ -25,6 +25,16 @@ public final class Character {
      */
     public static final Integer DEFENSE = Integer.valueOf(10);
 
+    /**
+     * Default value of string attribute.
+     */
+    private static final String DEFAULT_STRING_VALUE = "";
+
+    /**
+     * Default value of integer attribute.
+     */
+    private static final Integer DEFAULT_INTEGER_VALUE = -1;
+
 
     /**
      * Character object ID.
@@ -119,27 +129,29 @@ public final class Character {
     }
 
     /**
-     * @param <T> datatype returned
      * @param attrname the name of the attribute to be found
-     * @param clazz the class of the attribute
      * @return the value of the attribute
      */
-    public <T> T getAttribute(final String attrname, final Class<T> clazz) {
-        if ("Integer".equals(clazz.getSimpleName())) {
-            for (IntegerAttribute attribute : integerAttributes) {
-                if (attribute.getName().equals(attrname)) {
-                    return (T) attribute.getValue();
-                }
+    public String getStringAttribute(final String attrname) {
+        for (StringAttribute attribute : stringAttributes) {
+            if (attribute.getName().equals(attrname)) {
+                return attribute.getValue();
             }
-            return defaultValue(clazz);
-        } else {
-            for (StringAttribute attribute : stringAttributes) {
-                if (attribute.getName().equals(attrname)) {
-                    return (T) attribute.getValue();
-                }
-            }
-            return defaultValue(clazz);
         }
+        return DEFAULT_STRING_VALUE;
+    }
+
+    /**
+     * @param attrname the name of the attribute to be found
+     * @return the value of the attribute
+     */
+    public Integer getIntegerAttribute(final String attrname) {
+        for (IntegerAttribute attribute : integerAttributes) {
+            if (attribute.getName().equals(attrname)) {
+                return attribute.getValue();
+            }
+        }
+        return DEFAULT_INTEGER_VALUE;
     }
 
     /**
@@ -166,21 +178,6 @@ public final class Character {
             }
         }
         stringAttributes.add(new StringAttribute(attrname, value));
-    }
-
-    /**
-     * @param <T> the datatype returned
-     * @param clazz the class of the value returned
-     * @return a default string or integer
-     */
-    private <T> T defaultValue(final Class<T> clazz) {
-        if ("String".equals(clazz.getSimpleName())) {
-            return (T) "";
-        }
-        if ("Integer".equals(clazz.getSimpleName())) {
-            return (T) Integer.valueOf(-1);
-        }
-        return null;
     }
 
     /**
