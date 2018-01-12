@@ -25,6 +25,7 @@ public final class Character {
      */
     public static final Integer DEFENSE = Integer.valueOf(10);
 
+
     /**
      * Character object ID.
      */
@@ -37,51 +38,11 @@ public final class Character {
     /** */
     private Long playerid;
     /** */
-    private Integer strength;
+    @OneToMany
+    private List<IntegerAttribute> integerAttributes;
     /** */
-    private Integer dexterity;
-    /** */
-    private Integer constitution;
-    /** */
-    private Integer intelligence;
-    /** */
-    private Integer wisdom;
-    /** */
-    private Integer charisma;
-    /** */
-    private String gender;
-    /** */
-    private Integer age;
-    /**
-     * Height in inches.
-     */
-    private Integer height;
-    /** */
-    private Integer weight;
-    /** */
-    private String description;
-    /** */
-    private Integer baseattackbonus;
-    /** */
-    private Integer size;
-    /** */
-    private Integer maximumhealth;
-    /** */
-    private Integer fortitude;
-    /** */
-    private Integer reflex;
-    /** */
-    private Integer will;
-    /** */
-    private Integer landspeed;
-    /** */
-    private Integer swimspeed;
-    /** */
-    private Integer flightspeed;
-    /** */
-    private String flightmaneuverability;
-    /** */
-    private Integer burrowspeed;
+    @OneToMany
+    private List<StringAttribute> stringAttributes;
     /** */
     @OneToOne
     private Race race;
@@ -104,6 +65,40 @@ public final class Character {
 //    private HashMap<String, SpellsByLevel> spellsknown;
 //    /** */
 //    private HashMap<String, SpellsByLevel> spellsprepared;
+    /** */
+    public Character() {
+        id = Long.valueOf(0);
+        name = "";
+        playerid = Long.valueOf(0);
+        integerAttributes = new ArrayList<IntegerAttribute>();
+        stringAttributes = new ArrayList<StringAttribute>();
+        integerAttributes.add(new IntegerAttribute("strength", Integer.valueOf(SCORE_THRESHOLD)));
+        integerAttributes.add(new IntegerAttribute("dexterity", Integer.valueOf(SCORE_THRESHOLD)));
+        integerAttributes.add(
+                new IntegerAttribute("constitution", Integer.valueOf(SCORE_THRESHOLD)));
+        integerAttributes.add(
+                new IntegerAttribute("intelligence", Integer.valueOf(SCORE_THRESHOLD)));
+        integerAttributes.add(new IntegerAttribute("wisdom", Integer.valueOf(SCORE_THRESHOLD)));
+        integerAttributes.add(new IntegerAttribute("charisma", Integer.valueOf(SCORE_THRESHOLD)));
+        stringAttributes.add(new StringAttribute("gender", "male"));
+        integerAttributes.add(new IntegerAttribute("age", Integer.valueOf(0)));
+        integerAttributes.add(new IntegerAttribute("height", Integer.valueOf(0)));
+        integerAttributes.add(new IntegerAttribute("weight", Integer.valueOf(0)));
+        stringAttributes.add(new StringAttribute("description", ""));
+        integerAttributes.add(new IntegerAttribute("base attack bonus", Integer.valueOf(0)));
+        integerAttributes.add(new IntegerAttribute("size", Integer.valueOf(0)));
+        integerAttributes.add(
+                new IntegerAttribute("maximum health", Integer.valueOf(SCORE_THRESHOLD)));
+        integerAttributes.add(new IntegerAttribute("fortitude", Integer.valueOf(0)));
+        integerAttributes.add(new IntegerAttribute("reflex", Integer.valueOf(0)));
+        integerAttributes.add(new IntegerAttribute("will", Integer.valueOf(0)));
+        integerAttributes.add(new IntegerAttribute("land speed", Integer.valueOf(0)));
+        integerAttributes.add(new IntegerAttribute("swim speed", Integer.valueOf(0)));
+        integerAttributes.add(new IntegerAttribute("flight speed", Integer.valueOf(0)));
+        stringAttributes.add(new StringAttribute("flight maneuverability", ""));
+        integerAttributes.add(new IntegerAttribute("burrow speed", Integer.valueOf(0)));
+        integerAttributes.add(new IntegerAttribute("height", Integer.valueOf(0)));
+    }
 
     /**
      * This is important in Pathfinder because the modifier is based entirely on the
@@ -121,6 +116,71 @@ public final class Character {
         } else {
             return score - SCORE_THRESHOLD;
         }
+    }
+
+    /**
+     * @param <T> datatype returned
+     * @param attrname the name of the attribute to be found
+     * @param clazz the class of the attribute
+     * @return the value of the attribute
+     */
+    public <T> T getAttribute(final String attrname, final Class<T> clazz) {
+        if ("Integer".equals(clazz.getSimpleName())) {
+            for (IntegerAttribute attribute : integerAttributes) {
+                if (attribute.getName().equals(attrname)) {
+                    return (T) attribute.getValue();
+                }
+            }
+            return defaultValue(clazz);
+        } else {
+            for (StringAttribute attribute : stringAttributes) {
+                if (attribute.getName().equals(attrname)) {
+                    return (T) attribute.getValue();
+                }
+            }
+            return defaultValue(clazz);
+        }
+    }
+
+    /**
+     * @param attrname the name of the attribute
+     * @param value the value of the attribute
+     */
+    public void addIntegerAttribute(final String attrname, final Integer value) {
+        for (IntegerAttribute attribute : integerAttributes) {
+            if (attribute.getName().equals(attrname)) {
+                integerAttributes.remove(attribute);
+            }
+        }
+        integerAttributes.add(new IntegerAttribute(attrname, value));
+    }
+
+    /**
+     * @param attrname the name of the attribute
+     * @param value the value of the attribute
+     */
+    public void addStringAttribute(final String attrname, final String value) {
+        for (StringAttribute attribute : stringAttributes) {
+            if (attribute.getName().equals(attrname)) {
+                stringAttributes.remove(attribute);
+            }
+        }
+        stringAttributes.add(new StringAttribute(attrname, value));
+    }
+
+    /**
+     * @param <T> the datatype returned
+     * @param clazz the class of the value returned
+     * @return a default string or integer
+     */
+    private <T> T defaultValue(final Class<T> clazz) {
+        if ("String".equals(clazz.getSimpleName())) {
+            return (T) "";
+        }
+        if ("Integer".equals(clazz.getSimpleName())) {
+            return (T) Integer.valueOf(-1);
+        }
+        return null;
     }
 
     /**
@@ -167,228 +227,31 @@ public final class Character {
     }
 
     /**
-     * @return gets the strength ability score of the character in the form of an
-     *         Integer
+     * @return the attributes
      */
-    public Integer getStrength() {
-        return strength;
+    public List<IntegerAttribute> getIntegerAttributes() {
+        return integerAttributes;
     }
 
     /**
-     * @param strength
-     *            takes an Integer input and sets the strength ability score to the
-     *            value.
+     * @param attributes the list of integer attributes to set
      */
-    public void setStrength(final Integer strength) {
-        this.strength = strength;
+    public void setIntegerAttributes(final List<IntegerAttribute> attributes) {
+        this.integerAttributes = attributes;
     }
 
     /**
-     * @return gets the dexterity ability score of the character in the form of an
-     *         Integer
+     * @return the list of string attributes
      */
-    public Integer getDexterity() {
-        return dexterity;
+    public List<StringAttribute> getStringAttributes() {
+        return stringAttributes;
     }
 
     /**
-     * @param dexterity
-     *            takes an Integer input and sets the dexterity ability score to the
-     *            value.
+     * @param attributes the list string attributes to set
      */
-    public void setDexterity(final Integer dexterity) {
-        this.dexterity = dexterity;
-    }
-
-    /**
-     * @return gets the constitution ability score of the character in the form of
-     *         an Integer
-     */
-    public Integer getConstitution() {
-        return constitution;
-    }
-
-    /**
-     * @param constitution
-     *            takes an Integer input and sets the constitution ability score to
-     *            the value.
-     */
-    public void setConstitution(final Integer constitution) {
-        this.constitution = constitution;
-    }
-
-    /**
-     * @return gets the intelligence ability score of the character in the form of
-     *         an Integer
-     */
-    public Integer getIntelligence() {
-        return intelligence;
-    }
-
-    /**
-     * @param intelligence
-     *            takes an Integer input and sets the intelligence ability score to
-     *            the value.
-     */
-    public void setIntelligence(final Integer intelligence) {
-        this.intelligence = intelligence;
-    }
-
-    /**
-     * @return gets the wisdom ability score of the character in the form of an
-     *         Integer
-     */
-    public Integer getWisdom() {
-        return wisdom;
-    }
-
-    /**
-     * @param wisdom
-     *            takes an Integer input and sets the wisdom ability score to the
-     *            value.
-     */
-    public void setWisdom(final Integer wisdom) {
-        this.wisdom = wisdom;
-    }
-
-    /**
-     * @return gets the charisma ability score of the character in the form of an
-     *         Integer
-     */
-    public Integer getCharisma() {
-        return charisma;
-    }
-
-    /**
-     * @param charisma
-     *            takes an Integer input and sets the charisma ability score to the
-     *            value.
-     */
-    public void setCharisma(final Integer charisma) {
-        this.charisma = charisma;
-    }
-
-    /**
-     * @return gets the gender of the character in the form of a String.
-     */
-    public String getGender() {
-        return gender;
-    }
-
-    /**
-     * @param gender
-     *            takes a String input and sets the character gender to the value
-     */
-    public void setGender(final String gender) {
-        this.gender = gender;
-    }
-
-    /**
-     * @return gets the age in years of the character in Integer form
-     */
-    public Integer getAge() {
-        return age;
-    }
-
-    /**
-     * @param age
-     *            takes an Integer and sets the character age to the value
-     */
-    public void setAge(final Integer age) {
-        this.age = age;
-    }
-
-    /**
-     * @return gets the height in inches of the character in Integer form
-     */
-    public Integer getHeight() {
-        return height;
-    }
-
-    /**
-     * @param height
-     *            takes an Integer and sets the character height to the value
-     */
-    public void setHeight(final Integer height) {
-        this.height = height;
-    }
-
-    /**
-     * @return gets the weight in pounds of the character in Integer form
-     */
-    public Integer getWeight() {
-        return weight;
-    }
-
-    /**
-     * @param weight
-     *            takes an Integer and sets the character weight to the value
-     */
-    public void setWeight(final Integer weight) {
-        this.weight = weight;
-    }
-
-    /**
-     * @return gets a further description of the appearance of the character in
-     *         String form
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description
-     *            takes a String and sets the character description to the value
-     */
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    /**
-     * @return gets the base attack bonus of the character in Integer form
-     */
-    public Integer getBaseattackbonus() {
-        return baseattackbonus;
-    }
-
-    /**
-     * @param baseattackbonus
-     *            takes an Integer and sets the character base attack bonus to the
-     *            value
-     */
-    public void setBaseattackbonus(final Integer baseattackbonus) {
-        this.baseattackbonus = baseattackbonus;
-    }
-
-    /**
-     * @return gets the size modifier of the character in Integer form
-     */
-    public Integer getSize() {
-        return size;
-    }
-
-    /**
-     * @param size
-     *            takes an Integer and sets the character size modifier to the value
-     */
-    public void setSize(final Integer size) {
-        this.size = size;
-    }
-
-    /**
-     * @return gets the maximum health of the character in Integer form
-     */
-    public Integer getMaximumhealth() {
-        return maximumhealth;
-    }
-
-    /**
-     * @param maximumhealth
-     *            takes an Integer and sets the character maximum health to the
-     *            value
-     */
-    public void setMaximumhealth(final Integer maximumhealth) {
-        this.maximumhealth = maximumhealth;
+    public void setStringAttributes(final List<StringAttribute> attributes) {
+        this.stringAttributes = attributes;
     }
 
     // TODO make a get initiative function that uses a calculating class
@@ -396,53 +259,6 @@ public final class Character {
     /*
      * public Integer getInitiative() { return initiative; }
      */
-
-    /**
-     * @return gets the base fortitude of the character in Integer form
-     */
-    public Integer getFortitude() {
-        return fortitude;
-    }
-
-    /**
-     * @param fortitude
-     *            takes an Integer and sets the character base fortitude to the
-     *            value
-     */
-    public void setFortitude(final Integer fortitude) {
-        this.fortitude = fortitude;
-    }
-
-    /**
-     * @return gets the base reflex of the character in Integer form
-     */
-    public Integer getReflex() {
-        return reflex;
-    }
-
-    /**
-     * @param reflex
-     *            takes an Integer and sets the character base reflex to the value
-     */
-    public void setReflex(final Integer reflex) {
-        this.reflex = reflex;
-    }
-
-    /**
-     * @return gets the base will of the character in Integer form
-     */
-    public Integer getWill() {
-        return will;
-    }
-
-    /**
-     * @param will
-     *            takes an Integer and sets the character base will to the value
-     */
-    public void setWill(final Integer will) {
-        this.will = will;
-    }
-
     // TODO make a get combat maneuver bonus function that uses a calculating class
 
     /*
@@ -455,82 +271,6 @@ public final class Character {
     /*
      * public Integer getCombatmaneuverdefense() { return combatmaneuverdefense; }
      */
-
-    /**
-     * @return gets the land speed in squares of the character in Integer form
-     */
-    public Integer getLandspeed() {
-        return landspeed;
-    }
-
-    /**
-     * @param landspeed
-     *            takes an Integer and sets the character land speed to the value
-     */
-    public void setLandspeed(final Integer landspeed) {
-        this.landspeed = landspeed;
-    }
-
-    /**
-     * @return gets the swim speed in squares of the character in Integer form
-     */
-    public Integer getSwimspeed() {
-        return swimspeed;
-    }
-
-    /**
-     * @param swimspeed
-     *            takes an Integer and sets the character swim speed to the value
-     */
-    public void setSwimspeed(final Integer swimspeed) {
-        this.swimspeed = swimspeed;
-    }
-
-    /**
-     * @return gets the flight speed in squares of the character in Integer form
-     */
-    public Integer getFlightspeed() {
-        return flightspeed;
-    }
-
-    /**
-     * @param flightspeed
-     *            takes an Integer and sets the character flight speed to the value
-     */
-    public void setFlightspeed(final Integer flightspeed) {
-        this.flightspeed = flightspeed;
-    }
-
-    /**
-     * @return gets the flight maneuverability of the character in String form
-     */
-    public String getFlightmaneuverability() {
-        return flightmaneuverability;
-    }
-
-    /**
-     * @param flightmaneuverability
-     *            takes a String and sets the character flight maneuverability to
-     *            the value
-     */
-    public void setFlightmaneuverability(final String flightmaneuverability) {
-        this.flightmaneuverability = flightmaneuverability;
-    }
-
-    /**
-     * @return gets the burrow speed in squares of the character in Integer form
-     */
-    public Integer getBurrowspeed() {
-        return burrowspeed;
-    }
-
-    /**
-     * @param burrowspeed
-     *            takes an Integer and sets the character burrow speed to the value
-     */
-    public void setBurrowspeed(final Integer burrowspeed) {
-        this.burrowspeed = burrowspeed;
-    }
 
 //    /**
 //     * @return gets the list of passive affects on the character

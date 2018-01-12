@@ -45,8 +45,9 @@ public class CharacterController {
      */
     @GetMapping("/characters/{id}")
     @CrossOrigin(origins = "http://localhost:4200")
-    public Character characterById(@PathVariable final Long id) {
-        return repository.getOne(id);
+    public Character characterById(@PathVariable final long id) {
+        Character one = repository.findOne(id);
+        return one;
     }
 
     /**
