@@ -13,28 +13,13 @@ import javax.persistence.OneToOne;
  * @author jonathanschoeller
  */
 @Entity
-public final class Character {
-    /**
-     * Threshold point in score algorithms.
-     */
-    private static final int SCORE_THRESHOLD = 10;
+public final class Character implements IntegerAttributes, StringAttributes {
 
     /**
      * DEFENSE - the base defense before any calculation for both armor class and
      * combat maneuver defense is 10.
      */
     public static final Integer DEFENSE = Integer.valueOf(10);
-
-    /**
-     * Default value of string attribute.
-     */
-    private static final String DEFAULT_STRING_VALUE = "";
-
-    /**
-     * Default value of integer attribute.
-     */
-    private static final Integer DEFAULT_INTEGER_VALUE = -1;
-
 
     /**
      * Character object ID.
@@ -81,30 +66,10 @@ public final class Character {
         name = "";
         playerid = Long.valueOf(0);
         integerAttributes = new ArrayList<IntegerAttribute>();
-        addIntegerAttribute("strength", Integer.valueOf(SCORE_THRESHOLD));
-        addIntegerAttribute("dexterity", Integer.valueOf(SCORE_THRESHOLD));
-        addIntegerAttribute("constitution", Integer.valueOf(SCORE_THRESHOLD));
-        addIntegerAttribute("intelligence", Integer.valueOf(SCORE_THRESHOLD));
-        addIntegerAttribute("wisdom", Integer.valueOf(SCORE_THRESHOLD));
-        addIntegerAttribute("charisma", Integer.valueOf(SCORE_THRESHOLD));
-        addIntegerAttribute("age", Integer.valueOf(0));
-        addIntegerAttribute("height", Integer.valueOf(0));
-        addIntegerAttribute("weight", Integer.valueOf(0));
-        addIntegerAttribute("base attack bonus", Integer.valueOf(0));
-        addIntegerAttribute("size", Integer.valueOf(0));
-        addIntegerAttribute("maximum health", Integer.valueOf(SCORE_THRESHOLD));
-        addIntegerAttribute("fortitude", Integer.valueOf(0));
-        addIntegerAttribute("reflex", Integer.valueOf(0));
-        addIntegerAttribute("will", Integer.valueOf(0));
-        addIntegerAttribute("land speed", Integer.valueOf(0));
-        addIntegerAttribute("swim speed", Integer.valueOf(0));
-        addIntegerAttribute("flight speed", Integer.valueOf(0));
-        addIntegerAttribute("burrow speed", Integer.valueOf(0));
+        initIntegerAttributes();
 
         stringAttributes = new ArrayList<StringAttribute>();
-        addStringAttribute("gender", "male");
-        addStringAttribute("description", "");
-        addStringAttribute("flight maneuverability", "");
+        initStringAttributes();
     }
 
     /**
@@ -123,60 +88,6 @@ public final class Character {
         } else {
             return score - SCORE_THRESHOLD;
         }
-    }
-
-    /**
-     * @param attrname the name of the attribute to be found
-     * @return the value of the attribute
-     */
-    public String getStringAttribute(final String attrname) {
-        for (final StringAttribute attribute : stringAttributes) {
-            if (attribute.getName().equals(attrname)) {
-                return attribute.getValue();
-            }
-        }
-        return DEFAULT_STRING_VALUE;
-    }
-
-    /**
-     * @param attrname the name of the attribute to be found
-     * @return the value of the attribute
-     */
-    public Integer getIntegerAttribute(final String attrname) {
-        for (final IntegerAttribute attribute : integerAttributes) {
-            if (attribute.getName().equals(attrname)) {
-                return attribute.getValue();
-            }
-        }
-        return DEFAULT_INTEGER_VALUE;
-    }
-
-    /**
-     * @param attrname the name of the attribute
-     * @param value the value of the attribute
-     */
-    public void addIntegerAttribute(final String attrname, final Integer value) {
-        for (final IntegerAttribute attribute : integerAttributes) {
-            if (attribute.getName().equals(attrname)) {
-                attribute.setValue(value);
-                return;
-            }
-        }
-        integerAttributes.add(new IntegerAttribute(attrname, value));
-    }
-
-    /**
-     * @param attrname the name of the attribute
-     * @param value the value of the attribute
-     */
-    public void addStringAttribute(final String attrname, final String value) {
-        for (final StringAttribute attribute : stringAttributes) {
-            if (attribute.getName().equals(attrname)) {
-                attribute.setValue(value);
-                return;
-            }
-        }
-        stringAttributes.add(new StringAttribute(attrname, value));
     }
 
     /**
@@ -223,8 +134,9 @@ public final class Character {
     }
 
     /**
-     * @return the attributes
+     * {@inheritDoc}
      */
+    @Override
     public List<IntegerAttribute> getIntegerAttributes() {
         return integerAttributes;
     }
@@ -237,8 +149,9 @@ public final class Character {
     }
 
     /**
-     * @return the list of string attributes
+     * {@inheritDoc}
      */
+    @Override
     public List<StringAttribute> getStringAttributes() {
         return stringAttributes;
     }
