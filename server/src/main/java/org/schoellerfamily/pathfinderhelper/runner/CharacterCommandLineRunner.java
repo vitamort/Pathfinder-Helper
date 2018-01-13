@@ -19,12 +19,18 @@ import java.util.stream.Stream;
 @Component
 public class CharacterCommandLineRunner implements CommandLineRunner {
     /**
-     * Holds the persistence repository.
+     * Holds the persistence repository for characters.
      */
     private final CharacterRepository repository;
-    /** */
+
+    /**
+     * Holds the persistence repository for integer attributes.
+     */
     private final IntegerAttributeRepository iarepo;
-    /** */
+
+    /**
+     * Holds the persistence repository for string attributes.
+     */
     private final StringAttributeRepository sarepo;
 
     /**
@@ -52,10 +58,10 @@ public class CharacterCommandLineRunner implements CommandLineRunner {
                 .forEach(name -> {
                     final Character character = new Character();
                     character.setName(name);
-                    for (IntegerAttribute a : character.getIntegerAttributes()) {
+                    for (final IntegerAttribute a : character.getIntegerAttributes()) {
                         iarepo.save(a);
                     }
-                    for (StringAttribute a : character.getStringAttributes()) {
+                    for (final StringAttribute a : character.getStringAttributes()) {
                         sarepo.save(a);
                     }
                     repository.save(character);

@@ -3340,6 +3340,10 @@ Denotes whether comments are required (or unwanted) for specific language elemen
 Determines whether the dimensions of non-header comments found are within the specified limits.
     </description>
 		<priority>3</priority>
+	  <properties>
+	    <property name="maxLines" value="15"/>
+	    <property name="maxLineLength" value="100"/>
+	  </properties>
 		<example>
 <![CDATA[
 /**
