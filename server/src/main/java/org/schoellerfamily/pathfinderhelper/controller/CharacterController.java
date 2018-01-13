@@ -18,7 +18,7 @@ public class CharacterController {
     /**
      * Holds the persistence repository.
      */
-    private CharacterRepository repository;
+    private final CharacterRepository repository;
 
     /**
      * @param repository injects the persistence repository
@@ -46,8 +46,7 @@ public class CharacterController {
     @GetMapping("/characters/{id}")
     @CrossOrigin(origins = "http://localhost:4200")
     public Character characterById(@PathVariable final long id) {
-        Character one = repository.findOne(id);
-        return one;
+        return repository.findOne(id);
     }
 
     /**

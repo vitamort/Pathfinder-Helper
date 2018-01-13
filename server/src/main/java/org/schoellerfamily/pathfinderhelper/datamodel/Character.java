@@ -81,33 +81,30 @@ public final class Character {
         name = "";
         playerid = Long.valueOf(0);
         integerAttributes = new ArrayList<IntegerAttribute>();
+        addIntegerAttribute("strength", Integer.valueOf(SCORE_THRESHOLD));
+        addIntegerAttribute("dexterity", Integer.valueOf(SCORE_THRESHOLD));
+        addIntegerAttribute("constitution", Integer.valueOf(SCORE_THRESHOLD));
+        addIntegerAttribute("intelligence", Integer.valueOf(SCORE_THRESHOLD));
+        addIntegerAttribute("wisdom", Integer.valueOf(SCORE_THRESHOLD));
+        addIntegerAttribute("charisma", Integer.valueOf(SCORE_THRESHOLD));
+        addIntegerAttribute("age", Integer.valueOf(0));
+        addIntegerAttribute("height", Integer.valueOf(0));
+        addIntegerAttribute("weight", Integer.valueOf(0));
+        addIntegerAttribute("base attack bonus", Integer.valueOf(0));
+        addIntegerAttribute("size", Integer.valueOf(0));
+        addIntegerAttribute("maximum health", Integer.valueOf(SCORE_THRESHOLD));
+        addIntegerAttribute("fortitude", Integer.valueOf(0));
+        addIntegerAttribute("reflex", Integer.valueOf(0));
+        addIntegerAttribute("will", Integer.valueOf(0));
+        addIntegerAttribute("land speed", Integer.valueOf(0));
+        addIntegerAttribute("swim speed", Integer.valueOf(0));
+        addIntegerAttribute("flight speed", Integer.valueOf(0));
+        addIntegerAttribute("burrow speed", Integer.valueOf(0));
+
         stringAttributes = new ArrayList<StringAttribute>();
-        integerAttributes.add(new IntegerAttribute("strength", Integer.valueOf(SCORE_THRESHOLD)));
-        integerAttributes.add(new IntegerAttribute("dexterity", Integer.valueOf(SCORE_THRESHOLD)));
-        integerAttributes.add(
-                new IntegerAttribute("constitution", Integer.valueOf(SCORE_THRESHOLD)));
-        integerAttributes.add(
-                new IntegerAttribute("intelligence", Integer.valueOf(SCORE_THRESHOLD)));
-        integerAttributes.add(new IntegerAttribute("wisdom", Integer.valueOf(SCORE_THRESHOLD)));
-        integerAttributes.add(new IntegerAttribute("charisma", Integer.valueOf(SCORE_THRESHOLD)));
-        stringAttributes.add(new StringAttribute("gender", "male"));
-        integerAttributes.add(new IntegerAttribute("age", Integer.valueOf(0)));
-        integerAttributes.add(new IntegerAttribute("height", Integer.valueOf(0)));
-        integerAttributes.add(new IntegerAttribute("weight", Integer.valueOf(0)));
-        stringAttributes.add(new StringAttribute("description", ""));
-        integerAttributes.add(new IntegerAttribute("base attack bonus", Integer.valueOf(0)));
-        integerAttributes.add(new IntegerAttribute("size", Integer.valueOf(0)));
-        integerAttributes.add(
-                new IntegerAttribute("maximum health", Integer.valueOf(SCORE_THRESHOLD)));
-        integerAttributes.add(new IntegerAttribute("fortitude", Integer.valueOf(0)));
-        integerAttributes.add(new IntegerAttribute("reflex", Integer.valueOf(0)));
-        integerAttributes.add(new IntegerAttribute("will", Integer.valueOf(0)));
-        integerAttributes.add(new IntegerAttribute("land speed", Integer.valueOf(0)));
-        integerAttributes.add(new IntegerAttribute("swim speed", Integer.valueOf(0)));
-        integerAttributes.add(new IntegerAttribute("flight speed", Integer.valueOf(0)));
-        stringAttributes.add(new StringAttribute("flight maneuverability", ""));
-        integerAttributes.add(new IntegerAttribute("burrow speed", Integer.valueOf(0)));
-        integerAttributes.add(new IntegerAttribute("height", Integer.valueOf(0)));
+        addStringAttribute("gender", "male");
+        addStringAttribute("description", "");
+        addStringAttribute("flight maneuverability", "");
     }
 
     /**
@@ -120,7 +117,7 @@ public final class Character {
      * @return returns the ability score modifier of the score.
      */
     public static int getModifier(final Integer abilityScore) {
-        int score = abilityScore.intValue();
+        final int score = abilityScore.intValue();
         if (score >= SCORE_THRESHOLD) {
             return (score - SCORE_THRESHOLD) / 2;
         } else {
@@ -133,7 +130,7 @@ public final class Character {
      * @return the value of the attribute
      */
     public String getStringAttribute(final String attrname) {
-        for (StringAttribute attribute : stringAttributes) {
+        for (final StringAttribute attribute : stringAttributes) {
             if (attribute.getName().equals(attrname)) {
                 return attribute.getValue();
             }
@@ -146,7 +143,7 @@ public final class Character {
      * @return the value of the attribute
      */
     public Integer getIntegerAttribute(final String attrname) {
-        for (IntegerAttribute attribute : integerAttributes) {
+        for (final IntegerAttribute attribute : integerAttributes) {
             if (attribute.getName().equals(attrname)) {
                 return attribute.getValue();
             }
@@ -159,9 +156,10 @@ public final class Character {
      * @param value the value of the attribute
      */
     public void addIntegerAttribute(final String attrname, final Integer value) {
-        for (IntegerAttribute attribute : integerAttributes) {
+        for (final IntegerAttribute attribute : integerAttributes) {
             if (attribute.getName().equals(attrname)) {
-                integerAttributes.remove(attribute);
+                attribute.setValue(value);
+                return;
             }
         }
         integerAttributes.add(new IntegerAttribute(attrname, value));
@@ -172,9 +170,10 @@ public final class Character {
      * @param value the value of the attribute
      */
     public void addStringAttribute(final String attrname, final String value) {
-        for (StringAttribute attribute : stringAttributes) {
+        for (final StringAttribute attribute : stringAttributes) {
             if (attribute.getName().equals(attrname)) {
-                stringAttributes.remove(attribute);
+                attribute.setValue(value);
+                return;
             }
         }
         stringAttributes.add(new StringAttribute(attrname, value));
@@ -313,13 +312,12 @@ public final class Character {
     }
 
     /**
-     * @param characterClass
-     *            takes a class and levels it up, then updates the character based
-     *            on new total level and class levels
+     * @param characterClass takes a class and levels it up, then updates the
+     *        character based on new total level and class levels
      */
     public void levelUp(final CharacterClass characterClass) {
         // TODO update the character based on total level and class leveled
-        for (CharacterClassLevel classlevel : levels) {
+        for (final CharacterClassLevel classlevel : levels) {
             if (classlevel.getCharacterClass().getName().equals(characterClass.getName())) {
                 classlevel.levelUp();
                 return;
@@ -335,8 +333,7 @@ public final class Character {
     }
 
     /**
-     * @param race
-     *            takes a Race and sets it to the character race
+     * @param race takes a Race and sets it to the character race
      */
     public void setRace(final Race race) {
         this.race = race;
@@ -350,9 +347,8 @@ public final class Character {
     }
 
     /**
-     * @param item
-     *            takes an Item, creates a new inventory if one does not yet exist,
-     *            then puts the item into the character inventory
+     * @param item takes an Item, creates a new inventory if one does not yet
+     *        exist, then puts the item into the character inventory
      */
     public void addToInventory(final Item item) {
         if (inventory == null) {
@@ -362,33 +358,32 @@ public final class Character {
     }
 
     /**
-     * @param item
-     *            takes an Item and removes it from the character inventory
+     * @param item takes an Item and removes it from the character inventory
      */
     public void takeFromInventory(final Item item) {
         inventory.remove(item);
     }
 
     /**
-     * @return gets the list of character skills with ranks applied. The list is in
-     *         List form, and is populated with SkillRank
+     * @return gets the list of character skills with ranks applied. The list
+     *         is in List form, and is populated with SkillRank
      */
     public List<SkillRank> getSkillranks() {
         return skillranks;
     }
 
     /**
-     * @param skill
-     *            takes a skill. If there is not yet a list of skill ranks it makes
-     *            one. Then it checks if list of character skill ranks already has
-     *            ranks in the given skill. if it does, it iterates the rank count
-     *            for that skill. if it doesn't, it creates a new SkillRank
+     * @param skill takes a skill. If there is not yet a list of skill ranks it
+     *        makes one. Then it checks if list of character skill ranks
+     *        already has ranks in the given skill. if it does, it iterates the
+     *        rank count for that skill. if it doesn't, it creates a new
+     *        SkillRank
      */
     public void addSkillrank(final Skill skill) {
         if (skillranks == null) {
             skillranks = new ArrayList<SkillRank>();
         }
-        for (SkillRank skillrank : skillranks) {
+        for (final SkillRank skillrank : skillranks) {
             if (skillrank.getSkill().getName().equals(skill.getName())) {
                 skillrank.incrementRankCount();
                 return;
@@ -414,19 +409,17 @@ public final class Character {
     }
 
     /**
-     * @param ability
-     *            takes an Ability and adds it to the list of available
-     *            abilities for the character
+     * @param ability takes an Ability and adds it to the list of available
+     *        abilities for the character
      */
     public void addAbility(final Ability ability) {
         abilities.add(ability);
     }
 
     /**
-     * @param ability
-     *            takes an Ability and searches the list of abilities for the
-     *            character for a copy of the ability. If the ability is found, it
-     *            is removed from the list
+     * @param ability takes an Ability and searches the list of abilities for
+     *        the character for a copy of the ability. If the ability is found,
+     *        it is removed from the list
      */
     public void removeAbility(final Ability ability) {
         abilities.remove(ability);

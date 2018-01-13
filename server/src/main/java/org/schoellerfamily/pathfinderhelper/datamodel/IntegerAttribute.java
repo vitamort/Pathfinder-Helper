@@ -16,20 +16,23 @@ public final class IntegerAttribute {
     @Id
     @GeneratedValue
     private Long id;
+
     /** */
     private String name;
+
     /** */
     private Integer value;
 
-    /** */
+    /**
+     * Constructor.
+     */
     public IntegerAttribute() {
+        // Empty
     }
 
     /**
-     * @param name
-     *            the name to identify the attribute
-     * @param value
-     *            the value of the attribute
+     * @param name the name to identify the attribute
+     * @param value the value of the attribute
      */
     public IntegerAttribute(final String name, final Integer value) {
         this.setName(name);
@@ -58,8 +61,7 @@ public final class IntegerAttribute {
     }
 
     /**
-     * @param name
-     *            the name of the attribute
+     * @param name the name of the attribute
      */
     public void setName(final String name) {
         this.name = name;
@@ -73,8 +75,7 @@ public final class IntegerAttribute {
     }
 
     /**
-     * @param value
-     *            the value of the attribute
+     * @param value the value of the attribute
      */
     public void setValue(final Integer value) {
         this.value = value;

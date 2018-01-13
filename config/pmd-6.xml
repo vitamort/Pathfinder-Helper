@@ -159,7 +159,12 @@
 
         <rule ref="category/java/documentation.xml/CommentContent" />
         <rule ref="category/java/documentation.xml/CommentRequired" />
-        <rule ref="category/java/documentation.xml/CommentSize" />
+        <rule ref="category/java/documentation.xml/CommentSize">
+	  <properties>
+	    <property name="maxLines" value="15"/>
+	    <property name="maxLineLength" value="100"/>
+	  </properties>
+	</rule>
 
 	<!-- junit -->
         <rule ref="category/java/errorprone.xml/JUnitSpelling" />
